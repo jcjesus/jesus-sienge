@@ -17,37 +17,37 @@ public class TransportServiceImpl implements TransportService {
     private Logger logger = LoggerFactory.getLogger(TransportServiceImpl.class);
 
     @Autowired
-    private TransportRepository repository;
+    private TransportRepository transportRepository;
 
     @Override
     public List<Transport> findAll() {
         logger.info("Senge findAll execute.");
         List<Transport> list = new ArrayList<>();
-        repository.findAll().forEach(t -> list.add(t));
+        transportRepository.findAll().forEach(t -> list.add(t));
         return list;
     }
 
     @Override
     public Optional<Transport> findById(Long id) {
         logger.info("Senge findById execute. id: " + id);
-        return repository.findById(id);
+        return transportRepository.findById(id);
     }
 
     @Override
     public Transport save(Transport transport) {
         logger.info("Senge save execute. " + transport);
-        return repository.save(transport);
+        return transportRepository.save(transport);
     }
 
     @Override
     public void delete(Long id) {
         logger.info("Senge deleteById execute. id: " + id);
-        repository.deleteById(id);
+        transportRepository.deleteById(id);
     }
 
     @Override
     public void delete(Transport transport) {
         logger.info("Senge delete execute. " + transport);
-        repository.delete(transport);
+        transportRepository.delete(transport);
     }
 }

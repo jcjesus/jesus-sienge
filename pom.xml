@@ -11,7 +11,7 @@
 	<groupId>br.com.jesus.challenge</groupId>
 	<artifactId>jesus-sienge</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>senge</name>
+	<name>Jesus Sienge</name>
 	<description>Jesus Sienge Application</description>
 
 	<properties>
@@ -61,6 +61,14 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<requiresUnpack>
+						<dependency>
+							<groupId>br.com.jesus.challenge.sienge</groupId>
+							<artifactId>jesus-sienge</artifactId>
+						</dependency>
+					</requiresUnpack>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

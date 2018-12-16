@@ -1,30 +1,25 @@
 package br.com.jesus.challenge.sienge.services;
 
 import br.com.jesus.challenge.sienge.handler.exceptions.CostParameterException;
-import br.com.jesus.challenge.sienge.handler.exceptions.TransportNotFoundException;
-import br.com.jesus.challenge.sienge.models.Transport;
 import br.com.jesus.challenge.sienge.models.enums.RoadTypeEnum;
 import br.com.jesus.challenge.sienge.models.vo.CostVO;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CostServiceImpl implements CostService {
 
-    @Autowired
-    private TransportService transportService;
-
     @Override
-    public CostVO calculateCostTransportation(CostVO costVO, Long idTransport) throws CostParameterException {
-        Transport t = transportService.findById(idTransport).orElseThrow(() -> new TransportNotFoundException());
-        costVO.setVehicleDescription(t.getVehicleDescription());
+    public CostVO calculateCostTransportation(CostVO costVO) throws CostParameterException {
         validationCostParameters(costVO);
         Float cost = calculate(costVO);
         costVO.setCostTransportation(cost);
         return costVO;
     }
 
+    @Override
     public Float calculate(CostVO costVO) {
-        Float value = costVO.getDistanceNotPavedHighway()* RoadTypeEnum.NOT_PAVED_HIGHWAY.getCostPerKilometer()
-                    + costVO.getDistancePavedHighway()* RoadTypeEnum.PAVED_HIGHWAY.getCostPerKilometer();
+        Float value = costVO.getDistanceNotPavedHighway() * RoadTypeEnum.NOT_PAVED_HIGHWAY.getCostPerKilometer() * costVO.getTransport().getMultiplierFactorCost()
+                + costVO.getDistancePavedHighway() * RoadTypeEnum.PAVED_HIGHWAY.getCostPerKilometer() * costVO.getTransport().getMultiplierFactorCost();
 
         if(costVO.getWeightCargoCarried() > 5) {
             Integer exceed = costVO.getWeightCargoCarried() - 5;
@@ -35,6 +30,7 @@ public class CostServiceImpl implements CostService {
         return value;
     }
 
+    @Override
     public void validationCostParameters(CostVO costVO) throws CostParameterException {
         if(costVO.getDistanceNotPavedHighway() == null) {
             throw new CostParameterException("Distância não pavimentada não pode ser nulo.");
@@ -48,4 +44,6 @@ public class CostServiceImpl implements CostService {
             throw new CostParameterException("Peso da carga não pode ser nulo.");
         }
     }
+
+
 }
