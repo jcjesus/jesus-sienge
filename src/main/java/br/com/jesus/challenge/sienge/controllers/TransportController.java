@@ -44,7 +44,7 @@ public class TransportController {
     }
 
     @DeleteMapping("/transports/{id}")
-    public ResponseEntity<Void> deleteTarnsport(@PathVariable long id) {
+    public ResponseEntity<Void> deleteTransport(@PathVariable long id) {
         transportService.delete(id);
         return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
